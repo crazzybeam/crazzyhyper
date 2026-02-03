@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crazzy Beamers | Premium Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #05070a;
+            --card-bg: #0a0c10;
+            --border-color: #1a1d23;
+            --accent-blue: #00aeef;
+            --accent-purple: #a855f7;
+            --text-white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-white); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+
+        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .brand { font-weight: 900; color: var(--accent-blue); letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+
+        .main-container { width: 100%; max-width: 500px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .option-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; opacity: 0.7; }
+        .option-card.active { border-color: var(--accent-blue); background: rgba(0, 174, 239, 0.1); opacity: 1; box-shadow: 0 0 15px rgba(0, 174, 239, 0.2); }
+        .option-card i { font-size: 1.2rem; margin-bottom: 5px; color: var(--accent-blue); }
+
+        .input-group { background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); }
+        input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 16px; color: white; margin-bottom: 15px; outline: none; font-size: 0.9rem; text-align: center; }
+        
+        .gen-btn { width: 100%; padding: 16px; background: var(--accent-blue); color: #000; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .gen-btn:hover { filter: brightness(1.2); }
+
+        .result-box { margin-top: 25px; display: none; animation: slideUp 0.4s ease; }
+        .code-display { background: #000; border: 1px solid #333; padding: 18px; border-radius: 10px; color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 15px; text-align: center; }
+        .copy-btn { width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="brand"><i class="fas fa-skull"></i> CRAZZY BEAMERS</div>
+        <div style="font-size: 0.8rem; color: #7d8590;">Desenvolvido por <span style="color: var(--accent-purple); font-weight: bold;">7N</span></div>
+    </div>
+
+    <div class="main-container">
+        <div class="options-grid">
+            <div class="option-card active" onclick="sel(this)"> <i class="fas fa-globe"></i> <br> All Site </div>
+            <div class="option-card" onclick="sel(this)"> <i class="fas fa-lock"></i> <br> Private </div>
+            <div class="option-card" onclick="sel(this)"> <i class="fas fa-users"></i> <br> Group </div>
+            <div class="option-card" onclick="sel(this)"> <i class="fas fa-user-circle"></i> <br> Profile </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="url-in" placeholder="Cole seu link aqui...">
+            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINK CAMUFLADO</button>
+        </div>
+
+        <div class="result-box" id="res">
+            <p style="color: var(--accent-blue); font-size: 0.8rem; margin-bottom: 10px; text-align: center; font-weight: bold;">USE ESTE LINK NO DISCORD:</p>
+            <div class="code-display" id="out"></div>
+            <button class="copy-btn" onclick="clip()">COPIAR AGORA</button>
+        </div>
+    </div>
+
+    <script>
+        function sel(e) { 
+            document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('active')); 
+            e.classList.add('active'); 
+        }
+
+        function build() {
+            const val = document.getElementById('url-in').value.trim();
+            if(!val) return alert("Insira o link primeiro!");
+            
+            const btn = document.getElementById('main-btn');
+            btn.innerText = "BYPASSING...";
+            
+            // Método JSONP para Is.gd - Resolve o erro de conexão (CORS) das suas fotos
+            const script = document.createElement('script');
+            const callbackName = 'callback_' + Math.round(100000 * Math.random());
+            
+            window[callbackName] = function(data) {
+                if(data.shorturl) {
+                    const robloxMask = "https:/www.roblox.com/share?code=1f9c510c988d284fa0f84f3f9d2a998a&type=Server";
+                    const finalStr = `[${robloxMask}](${data.shorturl})`;
+                    
+                    document.getElementById('out').innerText = finalStr;
+                    document.getElementById('res').style.display = "block";
+                } else {
+                    alert("Erro ao encurtar. Domínio bloqueado ou link inválido.");
+                }
+                btn.innerText = "GERAR LINK CAMUFLADO";
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+
+            script.src = `https://is.gd/create.php?format=json&callback=${callbackName}&url=${encodeURIComponent(val)}`;
+            document.body.appendChild(script);
+        }
+
+        function clip() {
+            const t = document.getElementById('out').innerText;
+            navigator.clipboard.writeText(t);
+            alert("Link copiado com sucesso!");
+        }
+    </script>
+</body>
+</html>

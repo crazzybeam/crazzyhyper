@@ -3,77 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crazzy Beamers | Premium Edition</title>
+    <title>Crazzy Beamers | Ultra Purple Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #05070a;
-            --card-bg: #0a0c10;
-            --border-color: #1a1d23;
-            --accent-blue: #00aeef;
+            --bg-color: #030005;
+            --card-bg: #0d0118;
+            --border-color: #2d0b4d;
             --accent-purple: #a855f7;
-            --text-white: #ffffff;
+            --accent-glow: #7c3aed;
+            --text-white: #f3e8ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-white); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        body { 
+            background-color: var(--bg-color); 
+            background-image: radial-gradient(circle at top, #1a0233 0%, #030005 100%);
+            color: var(--text-white); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
 
-        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .brand { font-weight: 900; color: var(--accent-blue); letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .header { 
+            width: 100%; 
+            max-width: 550px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 15px; 
+        }
+        .brand { 
+            font-weight: 900; 
+            color: var(--accent-purple); 
+            letter-spacing: 2px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
 
-        .main-container { width: 100%; max-width: 500px; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .option-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; opacity: 0.7; }
-        .option-card.active { border-color: var(--accent-blue); background: rgba(0, 174, 239, 0.1); opacity: 1; box-shadow: 0 0 15px rgba(0, 174, 239, 0.2); }
-        .option-card i { font-size: 1.2rem; margin-bottom: 5px; color: var(--accent-blue); }
-
-        .input-group { background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); }
-        input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 16px; color: white; margin-bottom: 15px; outline: none; font-size: 0.9rem; text-align: center; }
+        .main-container { width: 100%; max-width: 550px; }
         
-        .gen-btn { width: 100%; padding: 16px; background: var(--accent-blue); color: #000; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .gen-btn:disabled { background: #333; color: #777; cursor: not-allowed; }
+        .options-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .option-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 12px 8px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            opacity: 0.6; 
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .option-card.active { 
+            border-color: var(--accent-purple); 
+            background: rgba(168, 85, 247, 0.15); 
+            opacity: 1; 
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .option-card i { 
+            font-size: 1.4rem; 
+            margin-bottom: 8px; 
+            color: var(--accent-purple); 
+            display: block;
+        }
 
-        .result-box { margin-top: 25px; display: none; animation: slideUp 0.4s ease; }
-        .code-display { background: #000; border: 1px solid #333; padding: 18px; border-radius: 10px; color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 15px; text-align: left; white-space: pre-wrap; }
-        .copy-btn { width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .input-group { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        input { 
+            width: 100%; 
+            background: #080111; 
+            border: 1px solid #3b0764; 
+            border-radius: 12px; 
+            padding: 16px; 
+            color: white; 
+            margin-bottom: 15px; 
+            outline: none; 
+            font-size: 0.9rem; 
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        input:focus { border-color: var(--accent-purple); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
+        
+        .gen-btn { 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(45deg, #7c3aed, #a855f7); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+        
+        .gen-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .gen-btn:disabled { background: #222; color: #555; cursor: not-allowed; box-shadow: none; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-box { margin-top: 25px; display: none; animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .code-display { 
+            background: #05000a; 
+            border: 1px solid #4a044e; 
+            padding: 20px; 
+            border-radius: 12px; 
+            color: #d8b4fe; 
+            font-family: 'Consolas', monospace; 
+            font-size: 0.85rem; 
+            word-break: break-all; 
+            margin-bottom: 15px; 
+            text-align: left; 
+            white-space: pre-wrap;
+            box-shadow: inset 0 0 10px rgba(0,0,0,1);
+        }
+        
+        .copy-btn { 
+            width: 100%; 
+            padding: 15px; 
+            background: #f3e8ff; 
+            color: #4c1d95; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        #extra-inputs { display: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="brand"><i class="fas fa-skull"></i> CRAZZY BEAMERS</div>
-        <div style="font-size: 0.8rem; color: #7d8590;">Desenvolvido por <span style="color: var(--accent-purple); font-weight: bold;">7N</span></div>
+        <div class="brand"><i class="fas fa-ghost"></i> CRAZZY BEAMERS</div>
+        <div style="font-size: 0.75rem; color: #a78bfa;">Dev by <span style="color: #fff; font-weight: bold;">7N</span></div>
     </div>
 
     <div class="main-container">
         <div class="options-grid">
-            <div class="option-card active" data-type="all" onclick="sel(this)"> <i class="fas fa-globe"></i> <br> All Site </div>
-            <div class="option-card" data-type="private" onclick="sel(this)"> <i class="fas fa-lock"></i> <br> Private </div>
-            <div class="option-card" data-type="group" onclick="sel(this)"> <i class="fas fa-users"></i> <br> Group </div>
-            <div class="option-card" data-type="profile" onclick="sel(this)"> <i class="fas fa-user-circle"></i> <br> Profile </div>
+            <div class="option-card active" data-type="all" onclick="sel(this)"> <i class="fas fa-layer-group"></i> All Site </div>
+            <div class="option-card" data-type="vip" onclick="sel(this)"> <i class="fas fa-crown"></i> Gerado (Vip) </div>
+            <div class="option-card" data-type="game" onclick="sel(this)"> <i class="fas fa-gamepad"></i> Game </div>
+            <div class="option-card" data-type="group" onclick="sel(this)"> <i class="fas fa-users"></i> Group </div>
+            <div class="option-card" data-type="profile" onclick="sel(this)"> <i class="fas fa-user"></i> Profile </div>
         </div>
 
         <div class="input-group">
-            <input type="text" id="url-in" placeholder="Cole seu link de captura aqui...">
-            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINKS CAMUFLADOS</button>
+            <div id="single-input">
+                <input type="text" id="url-in" placeholder="Cole seu link de captura aqui...">
+            </div>
+            
+            <div id="extra-inputs">
+                <input type="text" id="url-perfil" placeholder="Link Do Perfil:">
+                <input type="text" id="url-grupo" placeholder="Link Do Grupo:">
+                <input type="text" id="url-jogo" placeholder="Link Do Jogo:">
+            </div>
+
+            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINKS PERSONALIZADOS</button>
         </div>
 
         <div class="result-box" id="res">
-            <p style="color: var(--accent-blue); font-size: 0.8rem; margin-bottom: 10px; text-align: center; font-weight: bold;">USE ESTES LINKS NO DISCORD:</p>
+            <p style="color: var(--accent-purple); font-size: 0.8rem; margin-bottom: 12px; text-align: center; font-weight: 900; letter-spacing: 1px;">COPIE PARA O DISCORD:</p>
             <div class="code-display" id="out"></div>
-            <button class="copy-btn" onclick="clip()">COPIAR TUDO</button>
+            <button class="copy-btn" onclick="clip()"><i class="fas fa-copy"></i> COPIAR TUDO</button>
         </div>
     </div>
 
     <script>
         let selectedType = 'all';
+        const singleInputDiv = document.getElementById('single-input');
+        const extraInputsDiv = document.getElementById('extra-inputs');
 
         function sel(e) { 
             document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('active')); 
             e.classList.add('active'); 
             selectedType = e.getAttribute('data-type');
+            
+            if (selectedType === 'all') {
+                singleInputDiv.style.display = "none";
+                extraInputsDiv.style.display = "block";
+            } else {
+                singleInputDiv.style.display = "block";
+                extraInputsDiv.style.display = "none";
+            }
         }
 
         async function shortenPrimary(url) {
@@ -81,7 +221,6 @@
                 const callbackName = 'cb_' + Math.floor(Math.random() * 1000000);
                 const script = document.createElement('script');
                 const timeout = setTimeout(() => { resolve(null); }, 5000);
-
                 window[callbackName] = (data) => {
                     clearTimeout(timeout);
                     resolve(data.shorturl || null);
@@ -102,50 +241,74 @@
         }
 
         async function build() {
-            const val = document.getElementById('url-in').value.trim();
-            if(!val) return alert("Insira o link primeiro!");
-            
             const btn = document.getElementById('main-btn');
             const outBox = document.getElementById('out');
             const resDiv = document.getElementById('res');
 
-            btn.innerText = "BYPASSING...";
+            btn.innerText = "PROCESSANDO...";
             btn.disabled = true;
             resDiv.style.display = "none";
 
-            // Máscaras atualizadas com apenas UMA barra após o https:
             const masks = {
                 profile: "https:/www.roblox.com/users/10469270667/profile",
                 group: "https:/www.roblox.com/communities/35892415/vuvies#!/about",
-                private: "https:/www.roblox.com/share?code=4f0318a03224bb4fae86f53b1afc2b55&type=Server"
+                game: "https:/www.roblox.com/share?code=4f0318a03224bb4fae86f53b1afc2b55&type=Server",
+                vip: "https:/roblox.fandom.com/wiki/Player:Haz3mn/PLS_DONATE"
             };
 
-            let shortUrl = await shortenPrimary(val);
-            if (!shortUrl) {
-                shortUrl = await shortenBackup(val);
-            }
+            let finalOutput = "";
 
-            if (shortUrl) {
-                let finalOutput = "";
-                if (selectedType === 'all') {
-                    finalOutput = `[${masks.private}](${shortUrl})\n\n[${masks.group}](${shortUrl})\n\n[${masks.profile}](${shortUrl})`;
-                } else {
+            if (selectedType === 'all') {
+                const p = document.getElementById('url-perfil').value.trim();
+                const g = document.getElementById('url-grupo').value.trim();
+                const j = document.getElementById('url-jogo').value.trim();
+
+                if(!p || !g || !j) {
+                    alert("Por favor, preencha os 3 links!");
+                    resetBtn();
+                    return;
+                }
+
+                let sP = await shortenPrimary(p) || await shortenBackup(p);
+                let sG = await shortenPrimary(g) || await shortenBackup(g);
+                let sJ = await shortenPrimary(j) || await shortenBackup(j);
+
+                if(sP && sG && sJ) {
+                    finalOutput = `[${masks.profile}](${sP})\n\n[${masks.group}](${sG})\n\n[${masks.game}](${sJ})`;
+                }
+            } else {
+                const val = document.getElementById('url-in').value.trim();
+                if(!val) {
+                    alert("Insira o link primeiro!");
+                    resetBtn();
+                    return;
+                }
+
+                let shortUrl = await shortenPrimary(val) || await shortenBackup(val);
+                if (shortUrl) {
                     finalOutput = `[${masks[selectedType]}](${shortUrl})`;
                 }
+            }
+
+            if (finalOutput) {
                 outBox.innerText = finalOutput;
                 resDiv.style.display = "block";
             } else {
-                alert("Erro: O link foi bloqueado pelos encurtadores. Tente usar uma URL diferente.");
+                alert("Erro ao camuflar. Verifique os links e tente novamente.");
             }
+            resetBtn();
+        }
 
-            btn.innerText = "GERAR LINKS CAMUFLADOS";
+        function resetBtn() {
+            const btn = document.getElementById('main-btn');
+            btn.innerText = "GERAR LINKS PERSONALIZADOS";
             btn.disabled = false;
         }
 
         function clip() {
             const t = document.getElementById('out').innerText;
             navigator.clipboard.writeText(t);
-            alert("Links copiados!");
+            alert("Copiado com sucesso!");
         }
     </script>
 </body>

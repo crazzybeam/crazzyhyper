@@ -3,282 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morgan Beam | Pink Edition</title>
+    <title>AVISO IMPORTANTE | Morgan Beam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --bg-color: #050106;
-            --card-bg: #110214;
-            --border-color: #520b4d;
-            --accent-pink: #f472b6;
-            --accent-glow: #db2777;
-            --text-white: #fdf2f8;
+        :root { 
+            --accent-pink: #f472b6; 
+            --bg-dark: #070208; 
+            --card-bg: #15051a; 
+            --glow: rgba(244, 114, 182, 0.4); 
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
         body { 
-            background-color: var(--bg-color); 
-            background-image: radial-gradient(circle at top, #33022c 0%, #050106 100%);
-            color: var(--text-white); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
-        }
-
-        .header { 
-            width: 100%; 
-            max-width: 550px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 25px; 
-            border-bottom: 2px solid var(--border-color); 
-            padding-bottom: 15px; 
-        }
-        .brand { 
-            font-weight: 900; 
-            color: var(--accent-pink); 
-            letter-spacing: 2px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
-        }
-
-        .discord-link {
-            color: #fff;
-            background-color: #5865F2;
-            padding: 8px 20px;
-            border-radius: 50px; /* Botão arredondado */
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: bold;
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            height: 100vh;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
-        }
-        .discord-link:hover {
-            background-color: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.5);
+            justify-content: center;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #2d052a 0%, #070208 100%);
         }
 
-        .main-container { width: 100%; max-width: 550px; }
-        
-        .options-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-            gap: 10px; 
-            margin-bottom: 20px; 
-        }
-        
-        .option-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 12px 8px; 
-            text-align: center; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            opacity: 0.6; 
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .option-card.active { 
-            border-color: var(--accent-pink); 
-            background: rgba(244, 114, 182, 0.15); 
-            opacity: 1; 
-            box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .option-card i { 
-            font-size: 1.4rem; 
-            margin-bottom: 8px; 
-            color: var(--accent-pink); 
-            display: block;
-        }
-
-        .input-group { 
-            background: var(--card-bg); 
-            padding: 30px; 
-            border-radius: 20px; 
-            border: 1px solid var(--border-color); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        input { 
-            width: 100%; 
-            background: #0d0111; 
-            border: 1px solid #64075f; 
-            border-radius: 12px; 
-            padding: 16px; 
-            color: white; 
-            margin-bottom: 15px; 
-            outline: none; 
-            font-size: 0.9rem; 
+        .notice-container {
+            width: 90%;
+            max-width: 600px;
             text-align: center;
-            transition: 0.3s;
+            padding: 40px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-pink);
+            border-radius: 30px;
+            box-shadow: 0 0 50px var(--glow);
+            animation: pulseIn 0.8s ease-out;
         }
-        
-        input:focus { border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(244, 114, 182, 0.2); }
-        
-        .gen-btn { 
-            width: 100%; 
-            padding: 18px; 
-            background: linear-gradient(45deg, #db2777, #f472b6); 
-            color: white; 
-            border: none; 
-            border-radius: 12px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.4);
-        }
-        
-        .gen-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
-        .gen-btn:disabled { background: #222; color: #555; cursor: not-allowed; box-shadow: none; }
 
-        .result-box { margin-top: 25px; display: none; animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        
-        .code-display { 
-            background: #0a0110; 
-            border: 1px solid #520b4d; 
-            padding: 20px; 
-            border-radius: 12px; 
-            color: #fbcfe8; 
-            font-family: 'Consolas', monospace; 
-            font-size: 0.85rem; 
-            word-break: break-all; 
-            margin-bottom: 15px; 
-            text-align: left; 
-            white-space: pre-wrap;
-            box-shadow: inset 0 0 10px rgba(0,0,0,1);
+        .icon-warning {
+            font-size: 4rem;
+            color: var(--accent-pink);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--accent-pink);
         }
-        
-        .copy-btn { 
-            width: 100%; 
-            padding: 15px; 
-            background: #fdf2f8; 
-            color: #9d174d; 
-            border: none; 
-            border-radius: 12px; 
-            font-weight: 800; 
-            cursor: pointer; 
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-pink);
             text-transform: uppercase;
-            transition: 0.2s;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 30px;
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            background: linear-gradient(45deg, #db2777, var(--accent-pink));
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 50px; /* Arredondado */
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(219, 39, 119, 0.3);
+        }
+
+        .discord-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(219, 39, 119, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .brand-footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        @keyframes pulseIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Efeito de luz piscando no fundo */
+        .glow-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            background: radial-gradient(circle at 50% 50%, var(--accent-pink) 0%, transparent 70%);
+            animation: blink 4s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="brand"><i class="fas fa-magic"></i> Morgan Beam</div>
-        <a href="https://discord.gg/R5DKKHqDtz" target="_blank" class="discord-link"><i class="fab fa-discord"></i> Discord</a>
-    </div>
+    <div class="glow-bg"></div>
 
-    <div class="main-container">
-        <div class="options-grid">
-            <div class="option-card active" data-type="vip" onclick="sel(this)"> <i class="fas fa-crown"></i> Gerado (Vip) </div>
-            <div class="option-card" data-type="game" onclick="sel(this)"> <i class="fas fa-gamepad"></i> Game </div>
-            <div class="option-card" data-type="group" onclick="sel(this)"> <i class="fas fa-users"></i> Group </div>
-            <div class="option-card" data-type="profile" onclick="sel(this)"> <i class="fas fa-user"></i> Profile </div>
-        </div>
+    <div class="notice-container">
+        <i class="fas fa-exclamation-triangle icon-warning"></i>
+        <h1>ATENÇÃO</h1>
+        <p>
+            Aviso A Todos Da Crazzy O Serve Vai Ser Deletado e Nos Estamos Nesse Discord, 
+            <br><strong>"Morgan Beam"</strong>
+            <br><br>
+            Nosso novo Discord oficial está abaixo:
+        </p>
+        
+        <a href="https://discord.gg/R5DKKHqDtz" target="_blank" class="discord-btn">
+            <i class="fab fa-discord"></i> ENTRAR NO NOVO DISCORD
+        </a>
 
-        <div class="input-group">
-            <input type="text" id="url-in" placeholder="Cole seu link de captura aqui...">
-            <button class="gen-btn" id="main-btn" onclick="build()">GERAR LINK CAMUFLADO</button>
-        </div>
-
-        <div class="result-box" id="res">
-            <p style="color: var(--accent-pink); font-size: 0.8rem; margin-bottom: 12px; text-align: center; font-weight: 900; letter-spacing: 1px;">COPIE PARA O DISCORD:</p>
-            <div class="code-display" id="out"></div>
-            <button class="copy-btn" onclick="clip()"><i class="fas fa-copy"></i> COPIAR TUDO</button>
+        <div class="brand-footer">
+            Morgan Beam &copy; 2024
         </div>
     </div>
 
-    <script>
-        let selectedType = 'vip';
-
-        function sel(e) { 
-            document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('active')); 
-            e.classList.add('active'); 
-            selectedType = e.getAttribute('data-type');
-        }
-
-        async function shortenPrimary(url) {
-            return new Promise((resolve) => {
-                const callbackName = 'cb_' + Math.floor(Math.random() * 1000000);
-                const script = document.createElement('script');
-                const timeout = setTimeout(() => { resolve(null); }, 5000);
-                window[callbackName] = (data) => {
-                    clearTimeout(timeout);
-                    resolve(data.shorturl || null);
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                };
-                script.src = `https://is.gd/create.php?format=json&callback=${callbackName}&url=${encodeURIComponent(url)}`;
-                document.body.appendChild(script);
-            });
-        }
-
-        async function shortenBackup(url) {
-            try {
-                const res = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
-                if (res.ok) return await res.text();
-            } catch { return null; }
-            return null;
-        }
-
-        async function build() {
-            const btn = document.getElementById('main-btn');
-            const outBox = document.getElementById('out');
-            const resDiv = document.getElementById('res');
-            const val = document.getElementById('url-in').value.trim();
-
-            if(!val) {
-                alert("Insira o link primeiro!");
-                return;
-            }
-
-            btn.innerText = "PROCESSANDO...";
-            btn.disabled = true;
-            resDiv.style.display = "none";
-
-            const masks = {
-                profile: "https:/www.roblox.com/users/10469270667/profile",
-                group: "https:/www.roblox.com/communities/35892415/vuvies#!/about",
-                game: "https:/www.roblox.com/share?code=4f0318a03224bb4fae86f53b1afc2b55&type=Server",
-                vip: "https:/roblox.fandom.com/wiki/Player:Haz3mn/PLS_DONATE"
-            };
-
-            let shortUrl = await shortenPrimary(val) || await shortenBackup(val);
-            
-            if (shortUrl) {
-                outBox.innerText = `[${masks[selectedType]}](${shortUrl})`;
-                resDiv.style.display = "block";
-            } else {
-                alert("Erro ao camuflar. Verifique o link e tente novamente.");
-            }
-            
-            btn.innerText = "GERAR LINK CAMUFLADO";
-            btn.disabled = false;
-        }
-
-        function clip() {
-            const t = document.getElementById('out').innerText;
-            navigator.clipboard.writeText(t);
-            alert("Copiado com sucesso!");
-        }
-    </script>
 </body>
 </html>
